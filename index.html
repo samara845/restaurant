@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bite&Brew – Café & Restaurant</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e0b96a;
+    --dark: #1a1a1a;
+    --dark2: #111;
+    --white: #fff;
+    --gray: #f5f5f5;
+    --text: #333;
+    --text-light: #666;
+    --radius: 8px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; color: var(--text); background: #fff; }
+  img { max-width: 100%; display: block; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 999;
+    background: rgba(20,20,20,0.92); backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 68px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; color: #fff; }
+  .logo-icon { font-size: 28px; color: var(--gold); }
+  .logo-text { line-height: 1; }
+  .logo-text strong { font-family: 'Playfair Display', serif; font-size: 20px; color: #fff; letter-spacing: 0.5px; }
+  .logo-text span { font-size: 10px; color: #aaa; letter-spacing: 2px; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: #ccc; font-size: 14px; transition: color .2s; position: relative; }
+  .nav-links a.active, .nav-links a:hover { color: #fff; }
+  .nav-links a.active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background: var(--gold); border-radius: 2px; }
+  .btn-book-nav {
+    background: var(--gold); color: #fff; border: none; padding: 10px 22px;
+    border-radius: 4px; font-size: 14px; font-weight: 700; cursor: pointer;
+    font-family: 'Lato', sans-serif; transition: background .2s; white-space: nowrap;
+  }
+  .btn-book-nav:hover { background: var(--gold-light); }
+  .hamburger { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 4px; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: .3s; }
+  .mobile-menu { display: none; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; background: linear-gradient(to right, rgba(10,10,10,0.85) 45%, rgba(10,10,10,0.3) 100%),
+      url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80') center/cover no-repeat;
+    display: flex; align-items: center; padding: 120px 80px 80px;
+  }
+  .hero-content { max-width: 540px; }
+  .hero-tagline { font-family: 'Great Vibes', cursive; color: var(--gold); font-size: 36px; margin-bottom: 8px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px,5vw,64px); color: #fff; line-height: 1.15; margin-bottom: 20px; }
+  .hero p { color: #ccc; font-size: 15px; line-height: 1.7; margin-bottom: 36px; max-width: 420px; }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold); color: #fff; padding: 14px 28px; border-radius: 4px;
+    font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+    transition: background .2s; border: none; cursor: pointer; font-family: 'Lato',sans-serif;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-outline {
+    background: transparent; color: #fff; padding: 14px 28px; border-radius: 4px;
+    font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+    border: 2px solid #fff; transition: .2s; cursor: pointer; font-family: 'Lato',sans-serif;
+  }
+  .btn-outline:hover { background: #fff; color: #111; }
+
+  /* ── INFO BAR ── */
+  .info-bar {
+    background: #fff; box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    display: flex; justify-content: space-around; align-items: center;
+    padding: 28px 60px; gap: 20px; flex-wrap: wrap;
+  }
+  .info-item { display: flex; align-items: center; gap: 16px; }
+  .info-icon { width: 44px; height: 44px; border: 2px solid #e0e0e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 18px; flex-shrink: 0; }
+  .info-text strong { font-size: 15px; font-weight: 700; display: block; }
+  .info-text span { font-size: 13px; color: var(--text-light); }
+  .info-divider { width: 1px; height: 50px; background: #e0e0e0; }
+
+  /* ── SECTION COMMONS ── */
+  .section-label { color: var(--gold); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; text-align: center; margin-bottom: 8px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(28px,4vw,42px); text-align: center; color: #111; margin-bottom: 14px; }
+  .section-divider { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 18px; }
+  .section-divider::before, .section-divider::after { content:''; flex:1; max-width:80px; height:1px; background: var(--gold); }
+  .section-divider i { color: var(--gold); font-size: 18px; }
+  .section-desc { text-align: center; color: var(--text-light); font-size: 15px; line-height: 1.7; max-width: 580px; margin: 0 auto 44px; }
+
+  /* ── POPULAR DISHES ── */
+  .dishes-section { padding: 80px 60px; background: #fff; }
+  .dishes-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; margin-bottom: 44px; }
+  .dish-card { border-radius: 10px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.08); transition: transform .25s, box-shadow .25s; }
+  .dish-card:hover { transform: translateY(-6px); box-shadow: 0 8px 32px rgba(0,0,0,0.14); }
+  .dish-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+  .dish-info { padding: 16px; }
+  .dish-info h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .dish-meta { display: flex; align-items: center; justify-content: space-between; }
+  .dish-price { font-size: 15px; font-weight: 700; color: #111; }
+  .dish-rating { display: flex; align-items: center; gap: 4px; font-size: 13px; color: #555; }
+  .dish-rating i { color: #f5a623; }
+  .btn-view-menu {
+    display: block; margin: 0 auto; background: #111; color: #fff; padding: 14px 32px;
+    border-radius: 4px; font-size: 14px; font-weight: 700; border: none; cursor: pointer;
+    font-family: 'Lato',sans-serif; transition: background .2s; display: flex; align-items: center; gap: 8px; width: fit-content;
+  }
+  .btn-view-menu:hover { background: #333; }
+
+  /* ── ABOUT ── */
+  .about-section { padding: 80px 60px; background: #fff; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .about-images { position: relative; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 10px; }
+  .about-images img:first-child { grid-column: 1; grid-row: 1; border-radius: 10px; height: 200px; object-fit: cover; width: 100%; }
+  .about-images img:nth-child(2) { grid-column: 2; grid-row: 1; border-radius: 10px; height: 200px; object-fit: cover; width: 100%; }
+  .about-images img:nth-child(3) { grid-column: 1 / -1; grid-row: 2; border-radius: 10px; height: 220px; object-fit: cover; width: 100%; }
+  .exp-badge {
+    position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: #fff; width: 90px; height: 90px; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 11px; text-align: center; line-height: 1.3; font-weight: 700; z-index: 2; box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .exp-badge strong { font-size: 22px; font-weight: 900; }
+  .about-label { color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+  .about-title { font-family: 'Playfair Display', serif; font-size: clamp(26px,3vw,38px); color: #111; margin-bottom: 18px; line-height: 1.2; }
+  .about-divider { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .about-divider::before { content:''; width:60px; height:2px; background: var(--gold); }
+  .about-divider i { color: var(--gold); font-size: 16px; }
+  .about-desc { color: var(--text-light); font-size: 15px; line-height: 1.8; margin-bottom: 28px; }
+  .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 32px; }
+  .feature-item i { color: var(--gold); font-size: 22px; margin-bottom: 8px; }
+  .feature-item h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .feature-item p { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+  .btn-story { background: var(--gold); color: #fff; padding: 14px 28px; border-radius: 4px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'Lato',sans-serif; transition: background .2s; }
+  .btn-story:hover { background: var(--gold-light); }
+
+  /* ── STATS BAR ── */
+  .stats-bar { background: #111; padding: 44px 60px; display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+  .stat-item { display: flex; align-items: flex-start; gap: 16px; }
+  .stat-icon { width: 48px; height: 48px; border: 2px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 20px; flex-shrink: 0; }
+  .stat-text strong { color: #fff; font-size: 15px; font-weight: 700; display: block; margin-bottom: 4px; }
+  .stat-text span { color: #aaa; font-size: 13px; }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-section { padding: 80px 60px; background: #f9f9f9; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-bottom: 32px; }
+  .testi-card { background: #fff; border-radius: 10px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  .quote-icon { color: var(--gold); font-size: 28px; margin-bottom: 14px; line-height: 1; }
+  .testi-card p { font-size: 14px; color: var(--text-light); line-height: 1.8; margin-bottom: 20px; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: #ddd; }
+  .testi-name { font-weight: 700; font-size: 14px; }
+  .testi-city { font-size: 12px; color: var(--text-light); }
+  .testi-dots { display: flex; justify-content: center; gap: 8px; margin-top: 8px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #ddd; cursor: pointer; transition: background .2s; }
+  .dot.active { background: var(--gold); }
+
+  /* ── CTA BANNER ── */
+  .cta-banner {
+    background: linear-gradient(135deg, #1a1a1a 60%, #2a2215 100%);
+    padding: 52px 60px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  }
+  .cta-banner h2 { font-family: 'Playfair Display', serif; color: #fff; font-size: 28px; margin-bottom: 8px; }
+  .cta-banner p { color: #aaa; font-size: 14px; }
+  .cta-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-cta-primary { background: var(--gold); color: #fff; padding: 14px 28px; border-radius: 4px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: 'Lato',sans-serif; display: flex; align-items: center; gap: 8px; transition: background .2s; white-space: nowrap; }
+  .btn-cta-primary:hover { background: var(--gold-light); }
+  .btn-cta-outline { background: transparent; color: #fff; padding: 14px 28px; border-radius: 4px; font-size: 14px; font-weight: 700; border: 2px solid #fff; cursor: pointer; font-family: 'Lato',sans-serif; display: flex; align-items: center; gap: 8px; transition: .2s; white-space: nowrap; }
+  .btn-cta-outline:hover { background: #fff; color: #111; }
+
+  /* ── FOOTER ── */
+  footer { background: #111; padding: 60px 60px 30px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr 2fr; gap: 36px; margin-bottom: 44px; }
+  .footer-brand .logo { margin-bottom: 14px; }
+  .footer-brand p { color: #888; font-size: 13px; line-height: 1.8; margin-bottom: 20px; }
+  .social-links { display: flex; gap: 12px; }
+  .social-links a { width: 36px; height: 36px; border: 1px solid #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #888; font-size: 14px; transition: .2s; }
+  .social-links a:hover { border-color: var(--gold); color: var(--gold); }
+  .footer-col h4 { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 18px; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a { color: #888; font-size: 13px; transition: color .2s; }
+  .footer-col ul li a:hover { color: var(--gold); }
+  .contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+  .contact-item i { color: var(--gold); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+  .contact-item span { color: #888; font-size: 13px; line-height: 1.5; }
+  .newsletter-form { display: flex; gap: 0; margin-top: 6px; }
+  .newsletter-form input { flex: 1; background: #1f1f1f; border: 1px solid #333; border-right: none; padding: 12px 14px; color: #ccc; font-size: 13px; border-radius: 4px 0 0 4px; outline: none; font-family: 'Lato',sans-serif; }
+  .newsletter-form input::placeholder { color: #555; }
+  .newsletter-form button { background: var(--gold); border: none; color: #fff; padding: 0 16px; border-radius: 0 4px 4px 0; cursor: pointer; font-size: 16px; transition: background .2s; }
+  .newsletter-form button:hover { background: var(--gold-light); }
+  .footer-bottom { border-top: 1px solid #222; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer-bottom span { color: #555; font-size: 12px; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1100px) {
+    .dishes-grid { grid-template-columns: repeat(2,1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+    .stats-bar { grid-template-columns: repeat(2,1fr); }
+  }
+  @media(max-width:900px) {
+    .about-section { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr 1fr; }
+    .features-grid { grid-template-columns: repeat(3,1fr); }
+  }
+  @media(max-width:768px) {
+    nav { padding: 0 20px; }
+    .nav-links, .btn-book-nav { display: none; }
+    .hamburger { display: flex; }
+    .mobile-menu {
+      position: fixed; top: 68px; left: 0; width: 100%; background: #1a1a1a;
+      padding: 20px; z-index: 998; flex-direction: column; gap: 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { display: block; color: #ccc; font-size: 15px; padding: 14px 0; border-bottom: 1px solid #2a2a2a; transition: color .2s; }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-menu .btn-book-nav { display: block; margin-top: 16px; text-align: center; }
+    .hero { padding: 100px 24px 60px; }
+    .info-bar { padding: 20px 24px; flex-direction: column; align-items: flex-start; gap: 16px; }
+    .info-divider { display: none; }
+    .dishes-section, .about-section, .testimonials-section { padding: 60px 24px; }
+    .dishes-grid { grid-template-columns: 1fr 1fr; }
+    .about-images { grid-template-columns: 1fr 1fr; }
+    .stats-bar { padding: 40px 24px; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .cta-banner { padding: 40px 24px; flex-direction: column; }
+    footer { padding: 40px 24px 24px; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+  }
+  @media(max-width:480px) {
+    .dishes-grid { grid-template-columns: 1fr; }
+    .stats-bar { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .about-images { grid-template-columns: 1fr; }
+    .about-images img:first-child, .about-images img:nth-child(2), .about-images img:nth-child(3) { grid-column: 1; grid-row: auto; }
+    .hero-btns { flex-direction: column; }
+    .cta-btns { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">
+    <i class="fas fa-mug-hot logo-icon"></i>
+    <div class="logo-text">
+      <strong>Bite&amp;Brew</strong>
+      <br>
+      <span>Café &amp; Restaurant</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="index2.html">Menu</a></li>
+    <li><a href="index5.html">About Us</a></li>
+    <li><a href="index3.html">Reservation</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="index6.html">Contact</a></li>
+  </ul>
+  <button class="btn-book-nav"><a href="index3.html">Book a Table</a></button>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#">Home</a>
+  <a href="#menu">Menu</a>
+  <a href="#about">About Us</a>
+  <a href="#reservation">Reservation</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#contact">Contact</a>
+  <button class="btn-book-nav"><a href="index3.html">Book a Table</a></button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-tagline">Good Food, Great Mood</p>
+    <h1>Delicious Food<br>Happy Moments</h1>
+    <p>Experience the perfect blend of taste, ambiance and hospitality. Every dish is made with love.</p>
+    <div class="hero-btns">
+      <button class="btn-primary"><i class="fas fa-calendar-alt"></i> <a href="index3.html">Book a Table</a></button>
+      <button class="btn-outline"><i class="fas fa-shopping-bag"></i><a href="index4.html">Order online</a> </button>
+    </div>
+  </div>
+</section>
+
+<!-- INFO BAR -->
+<div class="info-bar">
+  <div class="info-item">
+    <div class="info-icon"><i class="far fa-clock"></i></div>
+    <div class="info-text">
+      <strong>Opening Hours</strong>
+      <span>Mon – Sun : 9:00 AM – 11:00 PM</span>
+    </div>
+  </div>
+  <div class="info-divider"></div>
+  <div class="info-item">
+    <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+    <div class="info-text">
+      <strong>Our Location</strong>
+      <span>123 Food Street, Flavor Town</span>
+    </div>
+  </div>
+  <div class="info-divider"></div>
+  <div class="info-item">
+    <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+    <div class="info-text">
+      <strong>Call Us</strong>
+      <span>+91 98765 43210</span>
+    </div>
+  </div>
+</div>
+
+<!-- POPULAR DISHES -->
+<section class="dishes-section" id="menu">
+  <p class="section-label">Chef's Special</p>
+  <h2 class="section-title">Our Popular Dishes</h2>
+  <div class="section-divider"><i class="fas fa-utensils"></i></div>
+  <p class="section-desc">Lorem ipsum dolor sit amet, consectet.er adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+  <div class="dishes-grid">
+    <div class="dish-card">
+      <img src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=600&q=80" alt="Creamy Alfredo Pasta">
+      <div class="dish-info">
+        <h3>Creamy Alfredo Pasta</h3>
+        <div class="dish-meta">
+          <span class="dish-price">₹299</span>
+          <span class="dish-rating"><i class="fas fa-star"></i> 4.8</span>
+        </div>
+      </div>
+    </div>
+    <div class="dish-card">
+      <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80" alt="Classic Cheese Burger">
+      <div class="dish-info">
+        <h3>Classic Cheese Burger</h3>
+        <div class="dish-meta">
+          <span class="dish-price">₹249</span>
+          <span class="dish-rating"><i class="fas fa-star"></i> 4.6</span>
+        </div>
+      </div>
+    </div>
+    <div class="dish-card">
+      <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="Farmhouse Pizza">
+      <div class="dish-info">
+        <h3>Farmhouse Pizza</h3>
+        <div class="dish-meta">
+          <span class="dish-price">₹349</span>
+          <span class="dish-rating"><i class="fas fa-star"></i> 4.7</span>
+        </div>
+      </div>
+    </div>
+    <div class="dish-card">
+      <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600&q=80" alt="Chocolate Lava Cake">
+      <div class="dish-info">
+        <h3>Chocolate Lava Cake</h3>
+        <div class="dish-meta">
+          <span class="dish-price">₹199</span>
+          <span class="dish-rating"><i class="fas fa-star"></i> 4.9</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="btn-view-menu">View Full Menu <i class="fas fa-chevron-right"></i></button>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-images">
+    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Restaurant Interior">
+    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80" alt="Coffee">
+    <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800&q=80" alt="Chef Cooking">
+    <div class="exp-badge"><strong>10+</strong><span>Years of<br>Experience</span></div>
+  </div>
+  <div class="about-content">
+    <p class="about-label">About Us</p>
+    <h2 class="about-title">We Serve More Than Just Food</h2>
+    <div class="about-divider"><i class="fas fa-utensils"></i></div>
+    <p class="about-desc">At Bite&amp;Brew, we believe in serving happiness on a plate. Our passion for food and commitment to quality ingredients make every meal a memorable experience.</p>
+    <div class="features-grid">
+      <div class="feature-item">
+        <i class="fas fa-leaf"></i>
+        <h4>Fresh Ingredients</h4>
+        <p>We use only the freshest ingredients</p>
+      </div>
+      <div class="feature-item">
+        <i class="fas fa-user-tie"></i>
+        <h4>Expert Chefs</h4>
+        <p>Our chefs are highly skilled</p>
+      </div>
+      <div class="feature-item">
+        <i class="fas fa-check-circle"></i>
+        <h4>Cozy Ambience</h4>
+        <p>Perfect place for family &amp; friends</p>
+      </div>
+    </div>
+    <button class="btn-story">Discover Our Story</button>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-icon"><i class="fas fa-seedling"></i></div>
+    <div class="stat-text"><strong>Fresh Ingredients</strong><span>Locally sourced &amp; always fresh</span></div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+    <div class="stat-text"><strong>Fast Service</strong><span>Quick delivery to your table</span></div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon"><i class="fas fa-users"></i></div>
+    <div class="stat-text"><strong>Hygienic Kitchen</strong><span>Clean, safe &amp; quality assured</span></div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon"><i class="fas fa-wine-glass-alt"></i></div>
+    <div class="stat-text"><strong>Best Ambience</strong><span>Cozy, comfortable &amp; welcoming place</span></div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <p class="section-label">Testimonials</p>
+  <h2 class="section-title">What Our Customers Say</h2>
+  <div class="section-divider"><i class="fas fa-utensils"></i></div>
+  <div class="testimonials-grid">
+    <div class="testi-card">
+      <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+      <p>The food was absolutely amazing! Great ambiance and super friendly staff. Highly recommended!</p>
+      <div class="testi-author">
+        <img class="testi-avatar" src="https://i.pravatar.cc/80?img=47" alt="Priya Sharma">
+        <div>
+          <div class="testi-name">Priya Sharma</div>
+          <div class="testi-city">Delhi</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+      <p>Best cafe in town! Loved their pasta and coffee. Will definitely visit again.</p>
+      <div class="testi-author">
+        <img class="testi-avatar" src="https://i.pravatar.cc/80?img=12" alt="Rohan Mehta">
+        <div>
+          <div class="testi-name">Rohan Mehta</div>
+          <div class="testi-city">Mumbai</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+      <p>Perfect place for a family dinner. Everything was just perfect.</p>
+      <div class="testi-author">
+        <img class="travatar" src="https://i.pravatar.cc/80?img=32" alt="Anjali Verma" style="width:42px;height:42px;border-radius:50%;object-fit:cover;">
+        <div>
+          <div class="testi-name">Anjali Verma</div>
+          <div class="testi-city">Bangalore</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="testi-dots">
+    <div class="dot active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+  <div>
+    <h2>Craving Something Delicious?</h2>
+    <p>Book a table or order your favorite food now!</p>
+  </div>
+  <div class="cta-btns">
+    <button class="btn-cta-primary"><i class="fas fa-calendar-alt"></i> Book a Table</button>
+    <button class="btn-cta-outline"><i class="fas fa-shopping-bag"></i> Order Online</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <i class="fas fa-mug-hot logo-icon"></i>
+        <div class="logo-text">
+          <strong>Bite&amp;Brew</strong>
+          <span>Café &amp; Restaurant</span>
+        </div>
+      </div>
+      <p>Good food, great mood. Visit us for an unforgettable dining experience.</p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Menu</a></li>
+        <li><a href="#">Reservation</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Useful Links</h4>
+      <ul>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Info</h4>
+      <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>123 Food Street, Flavor Town</span></div>
+      <div class="contact-item"><i class="fas fa-phone-alt"></i><span>+91 98765 43210</span></div>
+      <div class="contact-item"><i class="fas fa-envelope"></i><span>hello@biteandbrew.com</span></div>
+    </div>
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <p style="color:#888;font-size:13px;margin-bottom:14px;line-height:1.7;">Subscribe to get special offers and latest updates.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="Enter your email">
+        <button><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Bite&amp;Brew Café &amp; Restaurant. All Rights Reserved.</span>
+    <span>Designed with ❤️ by WebCraft</span>
+  </div>
+</footer>
+
+<script>
+  // Hamburger toggle
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  // Close mobile menu on link click
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+  // Testimonial dots (basic)
+  document.querySelectorAll('.dot').forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+    });
+  });
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.dish-card, .testi-card, .stat-item, .feature-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(28px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

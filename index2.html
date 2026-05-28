@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bite&Brew – Café & Restaurant</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C8922A;
+    --gold-light: #E8B84B;
+    --dark: #111111;
+    --dark2: #1a1a1a;
+    --card-bg: #ffffff;
+    --bg: #f5f5f0;
+    --text: #222;
+    --muted: #666;
+    --border: #e5e5e5;
+    --radius: 12px;
+  }
+
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
+
+  /* ===== NAV ===== */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--dark);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 64px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; }
+  .nav-logo .logo-icon { color: var(--gold); font-size: 22px; }
+  .nav-logo .logo-text { line-height: 1; }
+  .nav-logo .logo-text strong { display: block; font-family: 'Playfair Display', serif; color: #fff; font-size: 15px; letter-spacing: 0.5px; }
+  .nav-logo .logo-text span { font-size: 9px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: #ccc; text-decoration: none; font-size: 13.5px; font-weight: 400; transition: color .2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  .nav-links a.active { border-bottom: 2px solid var(--gold); padding-bottom: 2px; }
+  .btn-book {
+    background: var(--gold); color: #fff; border: none; padding: 9px 20px;
+    border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: background .2s;
+  }
+  .btn-book:hover { background: var(--gold-light); }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--dark);
+    min-height: 340px;
+    display: flex; align-items: center;
+    padding: 60px 48px;
+    position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80') center/cover;
+    opacity: 0.18;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 460px; }
+  .hero-label { font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold); font-size: 18px; margin-bottom: 10px; }
+  .hero h1 { font-family: 'Playfair Display', serif; color: #fff; font-size: 46px; line-height: 1.15; font-weight: 700; margin-bottom: 14px; }
+  .hero p { color: #bbb; font-size: 14px; line-height: 1.6; max-width: 340px; margin-bottom: 28px; }
+  .hero-stats { display: flex; gap: 36px; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { color: #fff; font-size: 22px; font-weight: 700; font-family: 'Playfair Display', serif; }
+  .hero-stat .lbl { color: var(--gold); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  .hero-img {
+    position: absolute; right: 0; top: 0; height: 100%; width: 55%;
+    z-index: 0; overflow: hidden;
+  }
+  .hero-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+
+  /* ===== FILTER TABS ===== */
+  .filter-bar {
+    background: #fff;
+    padding: 0 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 64px; z-index: 90;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .tabs { display: flex; gap: 2px; padding: 12px 0; }
+  .tab-btn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 8px 18px; border-radius: 8px; border: none;
+    background: transparent; font-size: 13px; font-weight: 500;
+    color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all .2s; white-space: nowrap;
+  }
+  .tab-btn i { font-size: 13px; }
+  .tab-btn:hover { color: var(--gold); }
+  .tab-btn.active { background: var(--gold); color: #fff; }
+  .sort-select {
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 7px 12px; font-size: 13px; color: var(--muted);
+    background: #fff; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main { padding: 40px 48px; }
+
+  /* ===== SECTION ===== */
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .section-title-wrap {}
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 700; color: var(--dark);
+  }
+  .section-title-wrap .underline {
+    display: flex; align-items: center; gap: 6px; margin-top: 4px;
+  }
+  .section-title-wrap .underline span {
+    display: block; height: 2px; width: 28px; background: var(--gold);
+  }
+  .section-title-wrap .underline em { color: var(--gold); font-size: 13px; }
+  .view-all {
+    color: var(--gold); text-decoration: none; font-size: 13px; font-weight: 600;
+    display: flex; align-items: center; gap: 4px; transition: gap .2s;
+  }
+  .view-all:hover { gap: 8px; }
+
+  /* ===== CARDS GRID ===== */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  /* ===== CARD ===== */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    transition: transform .25s, box-shadow .25s;
+    position: relative;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.13); }
+  .card-img-wrap { position: relative; height: 180px; overflow: hidden; }
+  .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .card:hover .card-img-wrap img { transform: scale(1.05); }
+  .badge {
+    position: absolute; top: 10px; left: 10px;
+    background: var(--gold); color: #fff;
+    font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .fav-btn {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(255,255,255,0.9); border: none; border-radius: 50%;
+    width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all .2s; color: #aaa; font-size: 13px;
+  }
+  .fav-btn:hover, .fav-btn.active { color: #e74c3c; background: #fff; }
+  .card-body { padding: 14px; }
+  .card-body h3 { font-size: 15px; font-weight: 600; color: var(--dark); margin-bottom: 5px; }
+  .card-body p { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; min-height: 36px; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .price { font-size: 16px; font-weight: 700; color: var(--dark); font-family: 'Playfair Display', serif; }
+  .price .symbol { font-size: 12px; font-weight: 400; }
+  .add-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--gold); color: #fff; border: none;
+    padding: 7px 13px; border-radius: 6px; font-size: 12px; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background .2s, transform .15s;
+  }
+  .add-btn:hover { background: #b07a20; transform: scale(1.03); }
+  .add-btn i { font-size: 11px; }
+
+  /* ===== CTA ===== */
+  .cta-section {
+    background: var(--dark);
+    padding: 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-radius: 0;
+  }
+  .cta-text h2 { font-family: 'Playfair Display', serif; color: #fff; font-size: 30px; margin-bottom: 8px; }
+  .cta-text p { color: #aaa; font-size: 14px; }
+  .cta-btns { display: flex; gap: 14px; }
+  .cta-btn-primary {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--gold); color: #fff; border: none;
+    padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background .2s;
+  }
+  .cta-btn-primary:hover { background: var(--gold-light); }
+  .cta-btn-secondary {
+    display: flex; align-items: center; gap: 8px;
+    background: transparent; color: #fff; border: 1.5px solid #444;
+    padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: border-color .2s;
+  }
+  .cta-btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--dark2);
+    padding: 48px 48px 0;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr 1.8fr;
+    gap: 40px; padding-bottom: 40px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .footer-brand .logo-text strong { color: #fff; }
+  .footer-brand .logo-text span { color: var(--gold); }
+  .footer-brand p { color: #888; font-size: 13px; line-height: 1.7; margin: 14px 0 18px; }
+  .social-links { display: flex; gap: 12px; }
+  .social-links a {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid #333; display: flex; align-items: center; justify-content: center;
+    color: #888; font-size: 14px; text-decoration: none; transition: all .2s;
+  }
+  .social-links a:hover { border-color: var(--gold); color: var(--gold); }
+  .footer-col h4 { color: #fff; font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a { color: #888; text-decoration: none; font-size: 13px; transition: color .2s; }
+  .footer-col ul li a:hover { color: var(--gold); }
+  .contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+  .contact-item i { color: var(--gold); font-size: 13px; margin-top: 2px; }
+  .contact-item span { color: #888; font-size: 13px; line-height: 1.5; }
+  .newsletter-form { display: flex; gap: 0; margin-top: 4px; }
+  .newsletter-form input {
+    flex: 1; background: #222; border: 1px solid #333; border-right: none;
+    color: #ccc; padding: 10px 14px; border-radius: 6px 0 0 6px;
+    font-size: 13px; font-family: 'DM Sans', sans-serif; outline: none;
+  }
+  .newsletter-form input::placeholder { color: #555; }
+  .newsletter-form button {
+    background: var(--gold); border: none; color: #fff;
+    padding: 0 14px; border-radius: 0 6px 6px 0; cursor: pointer;
+    font-size: 14px; transition: background .2s;
+  }
+  .newsletter-form button:hover { background: var(--gold-light); }
+  .footer-bottom {
+    padding: 18px 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-bottom p { color: #555; font-size: 12px; }
+  .footer-bottom .crafted { color: #555; font-size: 12px; }
+  .footer-bottom .crafted span { color: #e74c3c; }
+
+  /* ===== CART TOAST ===== */
+  .toast {
+    position: fixed; bottom: 28px; right: 28px; z-index: 999;
+    background: var(--dark); color: #fff;
+    padding: 12px 20px; border-radius: 8px;
+    border-left: 4px solid var(--gold);
+    font-size: 13px; font-weight: 500;
+    transform: translateY(80px); opacity: 0;
+    transition: all .3s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 1100px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    nav { padding: 0 24px; }
+    .main { padding: 32px 24px; }
+    .hero { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-icon"> <i class="fas fa-mug-hot logo-icon"></i></div>
+    <div class="logo-text">
+      <strong>Bite&amp;Brew</strong>
+      <span>Café &amp; Restaurant</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index2.html" class="active">Menu</a></li>
+    <li><a href="index5.html">About Us</a></li>
+    <li><a href="index3.html">Reservation</a></li>
+    <li><a href="#">Gallery</a></li>
+    <li><a href="index6.html">Contact</a></li>
+  </ul>
+  <button class="btn-book">Book a Table</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-img">
+    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80" alt="Food" />
+  </div>
+  <div class="hero-content">
+    <div class="hero-label">Our Menu</div>
+    <h1>Good Food, Delicious Moments</h1>
+    <p>Explore our carefully crafted menu made with the freshest ingredients and lots of love.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">100+</div><div class="lbl">Dishes</div></div>
+      <div class="hero-stat"><div class="num">20+</div><div class="lbl">Beverages</div></div>
+      <div class="hero-stat"><div class="num">15+</div><div class="lbl">Desserts</div></div>
+      <div class="hero-stat"><div class="num">10+</div><div class="lbl">Chefs Special</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="tabs" id="tabs">
+    <button class="tab-btn active" data-filter="all"><i class="fas fa-border-all"></i> All Items</button>
+    <button class="tab-btn" data-filter="starters"><i class="fas fa-leaf"></i> Starters</button>
+    <button class="tab-btn" data-filter="main"><i class="fas fa-utensils"></i> Main Course</button>
+    <button class="tab-btn" data-filter="pizza"><i class="fas fa-pizza-slice"></i> Pizza</button>
+    <button class="tab-btn" data-filter="burger"><i class="fas fa-burger"></i> Burger</button>
+    <button class="tab-btn" data-filter="pasta"><i class="fas fa-bowl-food"></i> Pasta</button>
+    <button class="tab-btn" data-filter="beverages"><i class="fas fa-glass-water"></i> Beverages</button>
+    <button class="tab-btn" data-filter="desserts"><i class="fas fa-cake-candles"></i> Desserts</button>
+  </div>
+  <select class="sort-select">
+    <option>Sort by Popular</option>
+    <option>Price: Low to High</option>
+    <option>Price: High to Low</option>
+    <option>Newest First</option>
+  </select>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- Chef's Special -->
+  <section class="section" id="section-chefs">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <div class="section-title">Chef's Special</div>
+        <div class="underline"><span></span><em>✦</em></div>
+      </div>
+      <a href="#" class="view-all">View All <i class="fas fa-chevron-right" style="font-size:11px;"></i></a>
+    </div>
+    <div class="cards-grid" id="chefs-grid"></div>
+  </section>
+
+  <!-- Starters -->
+  <section class="section" id="section-starters">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <div class="section-title">Starters</div>
+        <div class="underline"><span></span><em>✦</em></div>
+      </div>
+      <a href="#" class="view-all">View All <i class="fas fa-chevron-right" style="font-size:11px;"></i></a>
+    </div>
+    <div class="cards-grid" id="starters-grid"></div>
+  </section>
+
+  <!-- Beverages -->
+  <section class="section" id="section-beverages">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <div class="section-title">Beverages</div>
+        <div class="underline"><span></span><em>✦</em></div>
+      </div>
+      <a href="#" class="view-all">View All <i class="fas fa-chevron-right" style="font-size:11px;"></i></a>
+    </div>
+    <div class="cards-grid" id="beverages-grid"></div>
+  </section>
+
+</main>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-text">
+    <h2>Craving Something Delicious?</h2>
+    <p>Book a table or order your favorite food now!</p>
+  </div>
+  <div class="cta-btns">
+    <button class="cta-btn-primary"><i class="fas fa-calendar-days"></i> Book a Table</button>
+    <button class="cta-btn-secondary"><i class="fas fa-bag-shopping"></i> Order Online</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo" style="margin-bottom:0;">
+        <div class="logo-icon"><i class="fas fa-mug-hot"></i></div>
+        <div class="logo-text">
+          <strong>Bite&amp;Brew</strong>
+          <span>Café &amp; Restaurant</span>
+        </div>
+      </div>
+      <p>Good food, great mood. Visit us for an unforgettable dining experience.</p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Menu</a></li>
+        <li><a href="#">Reservation</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Useful Links</h4>
+      <ul>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact Info</h4>
+      <div class="contact-item"><i class="fas fa-location-dot"></i><span>123 Food Street,<br>Flavor Town</span></div>
+      <div class="contact-item"><i class="fas fa-phone"></i><span>+91 98765 43210</span></div>
+      <div class="contact-item"><i class="fas fa-envelope"></i><span>hello@biteandbrew.com</span></div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <p style="color:#888;font-size:13px;margin-bottom:14px;">Subscribe to get special offers and latest updates.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="Enter your email" />
+        <button><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2024 Bite&amp;Brew Café &amp; Restaurant. All Rights Reserved.</p>
+    <div class="crafted">Designed with <span>♥</span> by WebCraft</div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">🛒 Added to cart!</div>
+
+<script>
+  const chefsData = [
+    { name: "Creamy Alfredo Pasta", desc: "Penna pasta in creamy white sauce with parmesan & herbs.", price: 299, badge: "Chef's Special", img: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&q=80" },
+    { name: "Classic Cheese Burger", desc: "Juicy grilled patty with cheddar cheese, lettuce, tomato & sauce.", price: 249, badge: "Chef's Special", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" },
+    { name: "Farmhouse Pizza", desc: "Loaded with veggies, cheese, olives & our special sauce.", price: 349, badge: "Chef's Special", img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80" },
+    { name: "Chocolate Lava Cake", desc: "Warm chocolate cake with a molten center, served with ice cream.", price: 199, badge: "Chef's Special", img: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80" },
+  ];
+
+  const startersData = [
+    { name: "Garlic Bread", desc: "Crispy garlic bread with herbs and melted butter.", price: 149, img: "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=400&q=80" },
+    { name: "Paneer Tikka", desc: "Cottage cheese marinated in spices & grilled to perfection.", price: 199, img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80" },
+    { name: "Chicken Wings", desc: "Spicy and crispy chicken wings served with dip.", price: 249, img: "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=400&q=80" },
+    { name: "Loaded Nachos", desc: "Nachos topped with cheese, salsa, jalapeños & sour cream.", price: 199, img: "https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=400&q=80" },
+  ];
+
+  const beveragesData = [
+    { name: "Cappuccino", desc: "Classic cappuccino with rich espresso & foamed milk.", price: 139, img: "https://images.unsplash.com/photo-1485808191679-5f86510bd9d7?w=400&q=80" },
+    { name: "Cold Coffee", desc: "Chilled coffee with ice cream and a hint of chocolate.", price: 149, img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=80" },
+    { name: "Mojito", desc: "Refreshing mint mojito with lime & soda.", price: 129, img: "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&q=80" },
+    { name: "Fresh Lime Soda", desc: "Fresh lime soda with mint for a perfect chill.", price: 99, img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&q=80" },
+  ];
+
+  function createCard(item) {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <div class="card-img-wrap">
+        <img src="${item.img}" alt="${item.name}" loading="lazy"/>
+        ${item.badge ? `<span class="badge">${item.badge}</span>` : ''}
+        <button class="fav-btn" onclick="toggleFav(this)"><i class="far fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <h3>${item.name}</h3>
+        <p>${item.desc}</p>
+        <div class="card-footer">
+          <div class="price"><span class="symbol">₹</span>${item.price}</div>
+          <button class="add-btn" onclick="addToCart('${item.name}')">
+            <i class="fas fa-cart-shopping"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+    `;
+    return div;
+  }
+
+  function renderGrid(data, gridId) {
+    const grid = document.getElementById(gridId);
+    data.forEach(item => grid.appendChild(createCard(item)));
+  }
+
+  renderGrid(chefsData, 'chefs-grid');
+  renderGrid(startersData, 'starters-grid');
+  renderGrid(beveragesData, 'beverages-grid');
+
+  // Tab filter
+  document.getElementById('tabs').addEventListener('click', e => {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+
+  // Fav toggle
+  function toggleFav(btn) {
+    btn.classList.toggle('active');
+    const icon = btn.querySelector('i');
+    icon.classList.toggle('far');
+    icon.classList.toggle('fas');
+  }
+
+  // Add to cart toast
+  let toastTimer;
+  function addToCart(name) {
+    const toast = document.getElementById('toast');
+    toast.textContent = `🛒 "${name}" added to cart!`;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+</script>
+</body>
+</html>

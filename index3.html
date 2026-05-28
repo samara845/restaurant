@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bite&Brew – Café & Restaurant</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9922A;
+    --gold-light: #E8B94F;
+    --dark: #1a1a1a;
+    --darker: #111111;
+    --white: #ffffff;
+    --off-white: #f8f5f0;
+    --gray: #6b6b6b;
+    --light-gray: #e8e8e8;
+    --card-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  body { font-family: 'Lato', sans-serif; color: var(--dark); background: var(--white); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--darker);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 68px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; }
+  .nav-logo .logo-icon { color: var(--gold); font-size: 22px; }
+  .nav-logo .logo-text { color: var(--white); }
+  .nav-logo .logo-text strong { font-family: 'Playfair Display', serif; font-size: 18px; letter-spacing: 0.5px; }
+  .nav-logo .logo-text span { display: block; font-size: 9px; letter-spacing: 2px; color: #aaa; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: #ccc; text-decoration: none; font-size: 14px; transition: color .2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a.active { color: var(--white); border-bottom: 2px solid var(--gold); padding-bottom: 2px; }
+  .btn-book-nav {
+    background: var(--gold); color: var(--white); border: none; padding: 10px 22px;
+    font-size: 14px; font-weight: 700; border-radius: 4px; cursor: pointer; transition: background .2s;
+  }
+  .btn-book-nav:hover { background: var(--gold-light); }
+
+  /* ── HERO ── */
+  .hero {
+    margin-top: 68px;
+    min-height: 420px;
+    background: linear-gradient(to right, rgba(0,0,0,0.82) 48%, rgba(0,0,0,0.35) 100%),
+      url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=80') center/cover no-repeat;
+    display: flex; align-items: center;
+    padding: 60px 48px;
+    position: relative; overflow: hidden;
+  }
+  .hero-content { max-width: 520px; }
+  .hero-subtitle { color: var(--gold); font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; margin-bottom: 14px; }
+  .hero-title { font-family: 'Playfair Display', serif; color: var(--white); font-size: 52px; line-height: 1.1; font-weight: 700; margin-bottom: 18px; }
+  .hero-desc { color: #ccc; font-size: 15px; line-height: 1.7; margin-bottom: 36px; max-width: 380px; }
+  .hero-badges { display: flex; gap: 36px; }
+  .hero-badge { display: flex; align-items: center; gap: 10px; color: var(--white); }
+  .hero-badge i { color: var(--gold); font-size: 18px; }
+  .hero-badge .badge-label { font-weight: 700; font-size: 13px; }
+  .hero-badge .badge-sub { font-size: 11px; color: #aaa; }
+
+  /* ── BOOKING SECTION ── */
+  .booking-section {
+    background: var(--off-white);
+    padding: 60px 48px;
+  }
+  .booking-wrapper {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 340px; gap: 24px;
+  }
+
+  /* booking form card */
+  .booking-card {
+    background: var(--white); border-radius: 12px; padding: 40px 44px;
+    box-shadow: var(--card-shadow);
+  }
+  .section-title { text-align: center; font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .section-divider {
+    text-align: center; margin-bottom: 28px; display: flex; align-items: center; justify-content: center; gap: 12px;
+  }
+  .section-divider::before, .section-divider::after { content:''; flex:1; height:1px; background: var(--light-gray); }
+  .section-divider i { color: var(--gold); font-size: 16px; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label { font-size: 12px; color: var(--gray); font-weight: 400; }
+  .form-group .input-wrap { position: relative; }
+  .form-group .input-wrap i {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--gold); font-size: 13px;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; border: 1.5px solid var(--light-gray); border-radius: 6px;
+    padding: 10px 12px 10px 34px; font-size: 14px; color: #888; font-family: 'Lato', sans-serif;
+    background: var(--white); outline: none; transition: border-color .2s;
+    appearance: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); color: var(--dark); }
+  .form-group textarea { resize: vertical; min-height: 80px; padding-top: 10px; }
+  .select-wrap { position: relative; }
+  .select-wrap::after { content:'\f078'; font-family:'Font Awesome 6 Free'; font-weight:900; position:absolute; right:12px; top:50%; transform:translateY(-50%); color:#aaa; font-size:11px; pointer-events:none; }
+
+  .btn-book-now {
+    width: 100%; background: var(--gold); color: var(--white); border: none;
+    padding: 15px; font-size: 15px; font-weight: 700; border-radius: 6px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background .2s, transform .1s; margin-top: 8px;
+  }
+  .btn-book-now:hover { background: #b8821f; }
+  .btn-book-now:active { transform: scale(0.99); }
+  .secure-note { text-align: center; font-size: 12px; color: #aaa; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+  /* restaurant info card */
+  .info-card { background: var(--darker); border-radius: 12px; overflow: hidden; }
+  .info-card-header { padding: 28px 28px 20px; }
+  .info-card-title { color: var(--gold); font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 22px; }
+  .info-item { display: flex; gap: 14px; margin-bottom: 20px; }
+  .info-item-icon { color: var(--gold); font-size: 16px; margin-top: 2px; min-width: 18px; }
+  .info-item-label { color: var(--white); font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .info-item-val { color: #aaa; font-size: 13px; }
+  .info-card-img { width: 100%; height: 160px; object-fit: cover; display: block; }
+  .info-card-img-placeholder {
+    width: 100%; height: 160px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80');
+    background-size: cover; background-position: center;
+  }
+
+  /* ── WHY BOOK ── */
+  .why-section { padding: 70px 48px; background: var(--white); text-align: center; }
+  .why-label { color: var(--gold); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; margin-bottom: 10px; }
+  .why-title { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; margin-bottom: 6px; }
+  .cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1100px; margin: 40px auto 0; }
+  .feature-card {
+    border: 1.5px solid var(--light-gray); border-radius: 10px; padding: 36px 24px;
+    text-align: center; transition: box-shadow .2s, transform .2s;
+  }
+  .feature-card:hover { box-shadow: var(--card-shadow); transform: translateY(-4px); }
+  .feature-icon { width: 60px; height: 60px; border-radius: 50%; background: #fdf3e3; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
+  .feature-icon i { color: var(--gold); font-size: 22px; }
+  .feature-card h3 { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+  .feature-card p { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
+  /* ── EVENT BANNER ── */
+  .event-banner {
+    margin: 0 48px 70px; border-radius: 12px; overflow: hidden;
+    background: linear-gradient(to right, rgba(0,0,0,0.85) 55%, rgba(0,0,0,0.4) 100%),
+      url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1200&q=80') center/cover no-repeat;
+    padding: 52px 60px;
+    display: flex; align-items: center; justify-content: space-between; gap: 30px;
+  }
+  .event-text h2 { color: var(--white); font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; margin-bottom: 10px; }
+  .event-text p { color: #ccc; font-size: 14px; max-width: 360px; line-height: 1.6; }
+  .btn-event {
+    background: transparent; color: var(--white); border: 1.5px solid var(--white);
+    padding: 13px 26px; border-radius: 6px; font-size: 14px; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap;
+    transition: background .2s, border-color .2s;
+  }
+  .btn-event:hover { background: var(--gold); border-color: var(--gold); }
+  .btn-event i { color: var(--gold-light); }
+  .btn-event:hover i { color: var(--white); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--darker); padding: 60px 48px 0; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.4fr 1.6fr; gap: 40px; max-width: 1200px; margin: 0 auto 50px; }
+  .footer-brand .logo-text strong { color: var(--white); font-family: 'Playfair Display', serif; font-size: 18px; }
+  .footer-brand .logo-text span { color: #888; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+  .footer-brand p { color: #888; font-size: 13px; line-height: 1.7; margin: 16px 0 22px; max-width: 220px; }
+  .social-links { display: flex; gap: 12px; }
+  .social-links a {
+    width: 34px; height: 34px; border-radius: 6px; border: 1px solid #333;
+    display: flex; align-items: center; justify-content: center; color: #aaa;
+    text-decoration: none; transition: border-color .2s, color .2s; font-size: 14px;
+  }
+  .social-links a:hover { border-color: var(--gold); color: var(--gold); }
+  .footer-col h4 { color: var(--white); font-size: 14px; font-weight: 700; margin-bottom: 18px; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 11px; }
+  .footer-col ul a { color: #888; font-size: 13px; text-decoration: none; transition: color .2s; }
+  .footer-col ul a:hover { color: var(--gold); }
+  .footer-contact-item { display: flex; gap: 10px; margin-bottom: 14px; color: #888; font-size: 13px; }
+  .footer-contact-item i { color: var(--gold); margin-top: 2px; font-size: 13px; }
+  .newsletter-input-wrap { display: flex; gap: 0; margin-top: 14px; }
+  .newsletter-input-wrap input {
+    flex: 1; background: #222; border: 1px solid #333; color: #ccc;
+    padding: 10px 14px; font-size: 13px; border-radius: 6px 0 0 6px; outline: none;
+    font-family: 'Lato', sans-serif;
+  }
+  .newsletter-input-wrap input::placeholder { color: #555; }
+  .newsletter-input-wrap button {
+    background: var(--gold); border: none; color: var(--white); padding: 10px 16px;
+    border-radius: 0 6px 6px 0; cursor: pointer; font-size: 14px; transition: background .2s;
+  }
+  .newsletter-input-wrap button:hover { background: var(--gold-light); }
+  .newsletter-sub { color: #888; font-size: 12px; margin-bottom: 0; }
+  .footer-bottom {
+    border-top: 1px solid #222; padding: 20px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .footer-bottom p { color: #555; font-size: 12px; }
+  .footer-bottom .credit { color: #555; font-size: 12px; }
+  .footer-bottom .credit span { color: var(--gold); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    z-index: 200; align-items: center; justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--white); border-radius: 12px; padding: 40px; max-width: 420px; width: 90%;
+    text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: popIn .3s ease;
+  }
+  @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal i.big { font-size: 50px; color: var(--gold); margin-bottom: 16px; }
+  .modal h3 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 10px; }
+  .modal p { color: var(--gray); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
+  .modal button { background: var(--gold); color: var(--white); border: none; padding: 12px 32px; border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <i class="fas fa-mug-hot logo-icon"></i>
+    <div class="logo-text">
+      <strong>Bite&amp;Brew</strong>
+      <span>Café &amp; Restaurant</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index2.html">Menu</a></li>
+    <li><a href="index5.html">About Us</a></li>
+    <li><a href="#" class="active">Reservation</a></li>
+    <li><a href="#">Gallery</a></li>
+    <li><a href="index6.html">Contact</a></li>
+  </ul>
+  <button class="btn-book-nav">Book a Table</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-subtitle">Reserve Your Table</div>
+    <h1 class="hero-title">Great Food Deserves<br>Great Moments</h1>
+    <p class="hero-desc">Book your table in advance and enjoy a delightful dining experience with your loved ones.</p>
+    <div class="hero-badges">
+      <div class="hero-badge">
+        <i class="far fa-calendar-check"></i>
+        <div>
+          <div class="badge-label">Easy Booking</div>
+          <div class="badge-sub">Quick &amp; hassle free</div>
+        </div>
+      </div>
+      <div class="hero-badge">
+        <i class="far fa-clock"></i>
+        <div>
+          <div class="badge-label">Instant Confirmation</div>
+          <div class="badge-sub">Get booking details</div>
+        </div>
+      </div>
+      <div class="hero-badge">
+        <i class="fas fa-user-friends"></i>
+        <div>
+          <div class="badge-label">Best Experience</div>
+          <div class="badge-sub">We serve you better</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING SECTION -->
+<section class="booking-section">
+  <div class="booking-wrapper">
+
+    <!-- FORM CARD -->
+    <div class="booking-card">
+      <h2 class="section-title">Book Your Table</h2>
+      <div class="section-divider"><i class="fas fa-utensils"></i></div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Select Date</label>
+          <div class="input-wrap">
+            <i class="far fa-calendar"></i>
+            <input type="date" placeholder="DD / MM / YYYY">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Select Time</label>
+          <div class="input-wrap select-wrap">
+            <i class="far fa-clock"></i>
+            <select>
+              <option value="" disabled selected>Select Time</option>
+              <option>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
+              <option>12:00 PM</option><option>01:00 PM</option><option>02:00 PM</option>
+              <option>06:00 PM</option><option>07:00 PM</option><option>08:00 PM</option>
+              <option>09:00 PM</option><option>10:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Number of Guests</label>
+          <div class="input-wrap select-wrap">
+            <i class="far fa-user"></i>
+            <select>
+              <option value="" disabled selected>Select Guests</option>
+              <option>1 Guest</option><option>2 Guests</option><option>3 Guests</option>
+              <option>4 Guests</option><option>5 Guests</option><option>6+ Guests</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Table Preference</label>
+          <div class="input-wrap select-wrap">
+            <i class="fas fa-chair"></i>
+            <select>
+              <option value="" disabled selected>Any Preference</option>
+              <option>Indoor</option><option>Outdoor</option><option>Private Booth</option><option>Window Side</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Your Name</label>
+          <div class="input-wrap">
+            <i class="far fa-user"></i>
+            <input type="text" placeholder="Enter your name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <div class="input-wrap">
+            <i class="fas fa-phone"></i>
+            <input type="tel" placeholder="Enter your number">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <div class="input-wrap">
+            <i class="far fa-envelope"></i>
+            <input type="email" placeholder="Enter your email">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Special Request (Optional)</label>
+          <div class="input-wrap">
+            <i class="far fa-comment" style="top:18px; transform:none;"></i>
+            <textarea placeholder="Any special request for us?" style="padding-left:34px;"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-book-now" onclick="showConfirmation()">
+        <i class="far fa-calendar-check"></i> Book Now
+      </button>
+      <div class="secure-note">
+        <i class="fas fa-lock"></i> Your information is safe and secure with us.
+      </div>
+    </div>
+
+    <!-- INFO CARD -->
+    <div class="info-card">
+      <div class="info-card-header">
+        <h3 class="info-card-title">Restaurant Information</h3>
+        <div class="info-item">
+          <i class="far fa-clock info-item-icon"></i>
+          <div>
+            <div class="info-item-label">Opening Hours</div>
+            <div class="info-item-val">Mon – Sun : 9:00 AM – 11:00 PM</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-map-marker-alt info-item-icon"></i>
+          <div>
+            <div class="info-item-label">Location</div>
+            <div class="info-item-val">123 Food Street, Flavor Town, FT 12345</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-phone info-item-icon"></i>
+          <div>
+            <div class="info-item-label">Call Us</div>
+            <div class="info-item-val">+91 98765 43210</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="far fa-envelope info-item-icon"></i>
+          <div>
+            <div class="info-item-label">Email Us</div>
+            <div class="info-item-val">hello@biteandbrew.com</div>
+          </div>
+        </div>
+      </div>
+      <div class="info-card-img-placeholder"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY BOOK WITH US -->
+<section class="why-section">
+  <div class="why-label">Why Book With Us</div>
+  <h2 class="why-title">Designed for Your Comfort</h2>
+  <div class="section-divider" style="max-width:300px;margin:8px auto 0;"><i class="fas fa-utensils"></i></div>
+  <div class="cards-grid">
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-chair"></i></div>
+      <h3>Premium Seating</h3>
+      <p>Comfortable seating with a perfect ambiance.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-concierge-bell"></i></div>
+      <h3>Personalized Service</h3>
+      <p>We make sure you have the best experience.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="far fa-calendar-check"></i></div>
+      <h3>Easy Reservations</h3>
+      <p>Book your table in just a few simple steps.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-star"></i></div>
+      <h3>Memorable Moments</h3>
+      <p>Good food, great vibes and unforgettable memories.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EVENT BANNER -->
+<div class="event-banner">
+  <div class="event-text">
+    <h2>Planning a special event?</h2>
+    <p>We've got you covered. Book your table for birthdays, anniversaries or corporate dinners.</p>
+  </div>
+  <button class="btn-event"><i class="far fa-calendar-alt"></i> Contact Us for Events</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo" style="margin-bottom:0;">
+        <i class="fas fa-mug-hot logo-icon"></i>
+        <div class="logo-text">
+          <strong>Bite&amp;Brew</strong>
+          <span>Café &amp; Restaurant</span>
+        </div>
+      </div>
+      <p>Good food, great mood. Visit us for an unforgettable dining experience.</p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Menu</a></li>
+        <li><a href="#">Reservation</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Useful Links</h4>
+      <ul>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Info</h4>
+      <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>123 Food Street,<br>Flavor Town</span></div>
+      <div class="footer-contact-item"><i class="fas fa-phone"></i><span>+91 98765 43210</span></div>
+      <div class="footer-contact-item"><i class="far fa-envelope"></i><span>hello@biteandbrew.com</span></div>
+    </div>
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <p class="newsletter-sub">Subscribe to get special offers and latest updates.</p>
+      <div class="newsletter-input-wrap">
+        <input type="email" placeholder="Enter your email">
+        <button><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Bite&amp;Brew Café &amp; Restaurant. All Rights Reserved.</p>
+    <div class="credit">Designed with <span>♥</span> by WebCraft</div>
+  </div>
+</footer>
+
+<!-- CONFIRMATION MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <i class="fas fa-check-circle big"></i>
+    <h3>Booking Confirmed!</h3>
+    <p>Your table has been successfully reserved. We'll send the confirmation details to your email shortly.</p>
+    <button onclick="closeModal()">Done</button>
+  </div>
+</div>
+
+<script>
+  function showConfirmation() {
+    const name = document.querySelector('input[placeholder="Enter your name"]').value;
+    const email = document.querySelector('input[placeholder="Enter your email"]').value;
+    const date = document.querySelector('input[type="date"]').value;
+    if (!name || !email || !date) {
+      alert('Please fill in your name, email, and date to proceed.');
+      return;
+    }
+    document.getElementById('modalOverlay').classList.add('active');
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+  }
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('.nav-links a, .btn-book-nav').forEach(link => {
+    link.addEventListener('click', e => {
+      if (link.classList.contains('btn-book-nav')) {
+        e.preventDefault();
+        document.querySelector('.booking-section').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
